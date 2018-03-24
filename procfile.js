@@ -1,29 +1,28 @@
 'use strict';
 
+const AppoloServer = require('./services/apolloServer');
+
 module.exports = (pandora) => {
 
-  pandora
-    .cluster('./index.js');
-
-  /**
-  * you can custom workers scale number
-  */
-  pandora
-    .process('worker')
-    .scale('auto'); // .scale('auto') means os.cpus().length
-
-  /**
-   * you can also use fork mode to start application
-   */
   // pandora
-  //   .fork('pandora_js', './index.js');
+  //   .process('ULTIMATE')
+  //   .scale('auto')
+  //   .env({
+  //     BAPO: 'blabla'
+  //   })
+  //   .entry('./index.js'); // .scale('auto') means os.cpus().length
 
-  /**
-   * you can create another process here
-   */
-  // pandora
-  //   .process('background')
-  //   .nodeArgs(['--expose-gc']);
+  pandora
+    .process('ULTIMATE')
+    .scale('auto');
+
+  pandora
+    .service('apolloServer', AppoloServer)
+    .config({
+      port: 3000
+    })
+    .process('ULTIMATE');
+
 
   /**
    * more features please visit our document.
